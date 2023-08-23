@@ -3,11 +3,12 @@ const fs = require('fs');
 
 exports.createBook = ('/', (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
+    console.log(bookObject)
     delete bookObject._id;
     delete bookObject.userId;
     delete req.body._id;
     const book = new Book({
-        ...req.body,
+        ...bookObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
@@ -42,7 +43,7 @@ exports.modifyBook = (req, res, next) => {
             } else {
                 Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Livre modifié!' }))
-                    .catch(error => res.status(401).json({ error }));
+                    .catch(error => res.status(401).json( error ));
             }
         })
         .catch((error) => {
