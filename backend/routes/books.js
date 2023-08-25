@@ -11,5 +11,6 @@ router.get('/:id', bookCtrl.getOneBook)
 router.put('/:id', auth, multer, bookCtrl.modifyBook)
 router.post('/', auth, multer, bookCtrl.createBook)
 router.delete('/:id', auth, bookCtrl.deleteBook)
+router.post('/:id/rating',auth, multer, bookCtrl.addRating)
 
 module.exports = router;
