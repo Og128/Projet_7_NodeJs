@@ -71,21 +71,28 @@ exports.deleteBook = (req, res, next) => {
 };
 
 exports.addRating = ("/:id/rating", (req, res, next) => {
-    ratingObject = req.body;
-
-    let Rating = {
+    let newRating = {
         userId: req.auth.userId,
         grade: req.body.rating,
     }
 
     Book.findByIdAndUpdate({ _id: req.params.id },
-        { $addToSet: { ratings: Rating }},
-        {returnOriginal: false})
+        { $addToSet: { ratings: newRating } },
+        { new: true })
         .then(book => {
             const sumRatings = book.ratings.reduce((sum, rating) => sum + rating.grade, 0);
             book.averageRating = sumRatings / book.ratings.length;
             book.averageRating.toFixed(2);
-            res.status(200).json(book)
+            return book.save();
         })
+        .then(book => { res.status(200).json(book) })
         .catch(error => res.status(400).json({ error }))
 })
+
+exports.bestRating = ('/', (req, res, next) => {
+    Book.find()
+        .sort({ averageRating: -1 })
+        .limit(3)
+        .then(books => res.status(200).json(books))
+        .catch(error => res.status(400).json({ error }));
+});
