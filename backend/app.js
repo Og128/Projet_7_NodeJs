@@ -4,7 +4,11 @@ const booksRoutes = require('./routes/books');
 const userRoutes = require('./routes/user');
 const path = require('path');
 
-mongoose.connect('mongodb+srv://Olivier:admin7@cluster7.qo5gpja.mongodb.net/?retryWrites=true&w=majority',
+require('dotenv').config();
+
+let pass = process.env.mongo;
+
+mongoose.connect(`mongodb+srv://Olivier:${pass}@cluster7.qo5gpja.mongodb.net/?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
