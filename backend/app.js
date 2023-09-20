@@ -8,7 +8,7 @@ require('dotenv').config();
 
 let pass = process.env.mongo;
 
-mongoose.connect(`mongodb+srv://Olivier:${pass}@cluster7.qo5gpja.mongodb.net/?retryWrites=true&w=majority`,
+mongoose.connect(pass,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
